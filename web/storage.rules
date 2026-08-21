@@ -1,0 +1,21 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isImageUpload(uid) {
+      return request.auth != null
+        && request.auth.uid == uid
+        && request.resource.size > 0
+        && request.resource.size <= 5 * 1024 * 1024
+        && request.resource.contentType in ['image/jpeg', 'image/png', 'image/webp'];
+    }
+
+    match /listings/{uid}/{fileName} {
+      allow read: if true;
+      allow create: if isImageUpload(uid);
+      allow update, delete: if request.auth != null
+        && request.auth.uid == uid;
+    }
+  }
+}
