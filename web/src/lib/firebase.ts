@@ -1,7 +1,6 @@
 import { getApp, getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
-import { getStorage, type FirebaseStorage } from "firebase/storage";
 
 interface FirebaseConfig {
   apiKey: string;
@@ -67,8 +66,4 @@ export function getFirebaseAuth(): Auth {
 
 export function getFirestoreDb(): Firestore {
   return getFirestore(resolveApp());
-}
-
-export function getFirebaseStorage(): FirebaseStorage {
-  return getStorage(resolveApp());
 }
