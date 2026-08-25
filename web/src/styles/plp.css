@@ -2,6 +2,19 @@
    PLP — Product Listing Page styles
    ============================================================ */
 
+/* Hero: compact now that the navbar owns global search.
+   The in-page search row is hidden to avoid triple-search confusion. */
+.hero {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-6);
+}
+.hero .hero-subtitle {
+  margin-bottom: 0;
+}
+.search-row {
+  display: none;
+}
+
 /* ---- Filter Sidebar (Desktop) ---- */
 .plp-layout {
   display: grid;
@@ -199,6 +212,7 @@
 }
 
 /* Active filter chips in results header */
+/* Results header: quiet status line, not a floating card */
 .results-header {
   display: flex;
   flex-wrap: wrap;
@@ -206,13 +220,6 @@
   justify-content: space-between;
   gap: var(--space-4);
   margin-bottom: var(--space-6);
-  padding: var(--space-4);
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .results-count {
@@ -302,14 +309,25 @@
   top: var(--space-3);
   right: var(--space-3);
   z-index: 2;
+  /* Stronger surface so the heart is visible on any product photo */
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(26, 24, 22, 0.15);
+}
+[data-theme="dark"] .product-card .favorite-button {
+  background: rgba(30, 28, 25, 0.92);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 /* ---- Mobile Filters Bottom Sheet ---- */
+.filters-trigger-row {
+  margin-bottom: var(--space-3);
+}
 .filters-trigger {
   display: none;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-5);
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   background: var(--glass-bg);
@@ -464,5 +482,28 @@
   .results-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+/* Desktop: hide the mobile-only filter UI entirely so the closed
+   bottom sheet can never leak into the desktop layout. */
+@media (min-width: 1025px) {
+  .filters-trigger-row {
+    display: none !important;
+  }
+  .filter-bottom-sheet,
+  .filter-bottom-sheet-backdrop {
+    display: none !important;
+  }
+}
+
+/* Mobile: results header inherits the quiet desktop style */
+@media (max-width: 768px) {
+  .results-header {
+    margin-bottom: var(--space-4);
+  }
+  .results-count {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
   }
 }

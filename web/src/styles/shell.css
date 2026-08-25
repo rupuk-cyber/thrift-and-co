@@ -393,6 +393,11 @@
   }
 }
 
+/* Mobile safe-area: keep the floating navbar clear of notches */
+.shell-navbar {
+  top: calc(var(--space-4) + env(safe-area-inset-top, 0px));
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .shell-mobile-sheet {

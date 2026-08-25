@@ -251,35 +251,6 @@ export function HomeBrowser() {
         </p>
       </section>
 
-      <div className="search-row fade-up">
-        <div className="search-field">
-          <label htmlFor="listing-search" className="sr-only">
-            Search listings
-          </label>
-          <span className="search-icon" aria-hidden="true">
-            🔍
-          </span>
-          <input
-            id="listing-search"
-            type="search"
-            value={inputValue}
-            onChange={(event) => setInputValue(event.target.value)}
-            placeholder="Search listings…"
-            autoComplete="off"
-          />
-          {inputValue && (
-            <button
-              type="button"
-              className="search-clear"
-              aria-label="Clear search"
-              onClick={() => setInputValue("")}
-            >
-              ✕
-            </button>
-          )}
-        </div>
-      </div>
-
       <CategoryPills active={category} onSelect={selectCategory} />
 
       <div className="plp-layout fade-up">
@@ -408,7 +379,7 @@ export function HomeBrowser() {
               aria-label={`Filters${activeFilterCount > 0 ? ` (${activeFilterCount} active)` : ""}`}
               aria-expanded={showMobileFilters}
             >
-              <span aria-hidden="true">🔍</span> Filters
+              <span aria-hidden="true">⚙</span> Filters
               {activeFilterCount > 0 && (
                 <span className="badge" aria-label={`${activeFilterCount} active filters`}>
                   {activeFilterCount}
@@ -581,6 +552,7 @@ export function HomeBrowser() {
         role="dialog"
         aria-modal="true"
         aria-label="Filters"
+        {...(showMobileFilters ? {} : { inert: true as unknown as boolean })}
       >
         <div className="filter-bottom-sheet-handle" aria-hidden="true" />
         <div className="filter-bottom-sheet-header">

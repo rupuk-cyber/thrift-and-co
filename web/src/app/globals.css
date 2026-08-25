@@ -8,7 +8,7 @@
     --bg-input: #faf9f7;
     --text-primary: #1a1816;
     --text-secondary: #5a5550;
-    --text-muted: #8a8580;
+    --text-muted: #6e6862;
     --border-color: #e0dbd5;
     --accent: #b8875a;
     --accent-hover: #a06f44;
@@ -59,7 +59,7 @@
     --bg-input: #2c2824;
     --text-primary: #f0ece6;
     --text-secondary: #b5aea6;
-    --text-muted: #7a756e;
+    --text-muted: #948d84;
     --border-color: #3a3530;
     --accent: #d4a373;
     --accent-hover: #c28e5c;
@@ -1436,7 +1436,7 @@ main {
 }
 .contact-note {
     font-size: var(--text-xs);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     text-align: center;
 }
 

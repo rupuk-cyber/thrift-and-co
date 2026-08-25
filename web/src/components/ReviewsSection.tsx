@@ -191,12 +191,21 @@ function SignInPrompt({ listingId }: { listingId: string }) {
   );
 }
 
-function RatingDistribution({ avg, count }: { avg: number; count: number }) {
-  const getPercentage = (star: number) => {
-    // This is a simplified distribution - in a real app you'd compute from actual reviews
-    const base = Math.max(0, 100 - Math.abs(star - avg) * 20);
-    return Math.round(base);
-  };
+function RatingDistribution({ avg, count, reviews }: { avg: number; count: number; reviews: Review[] }) {
+  // No reviews yet -> show summary only; fake distribution data is misleading.
+  if (count === 0) {
+    return (
+      <div className="rating-distribution" role="img" aria-label="No ratings yet">
+        <div className="rating-summary">
+          <span className="avg-rating" aria-label={`Average rating ${avg.toFixed(1)} out of 5`}>
+            {avg.toFixed(1)}
+          </span>
+          <StarRating rating={0} size="lg" ariaLabel="Average rating 0 out of 5" />
+          <span className="review-count">(no reviews yet)</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="rating-distribution" role="img" aria-label={`Rating distribution: ${avg.toFixed(1)} out of 5 stars, ${count} reviews`}>
@@ -207,17 +216,24 @@ function RatingDistribution({ avg, count }: { avg: number; count: number }) {
         <StarRating rating={avg} size="lg" ariaLabel={`Average rating ${avg.toFixed(1)} out of 5`} />
         <span className="review-count">({count} {count === 1 ? "review" : "reviews"})</span>
       </div>
+      {count > 0 && (
       <div className="distribution-bars">
-        {Array.from({ length: 5 }, (_, i) => 5 - i).map((star) => (
+        {Array.from({ length: 5 }, (_, i) => 5 - i).map((star) => {
+          const pct = Math.round(
+            (reviews.filter((r) => r.rating === star).length / count) * 100
+          );
+          return (
           <div key={star} className="distribution-bar">
             <span className="bar-label">{star}★</span>
-            <div className="bar-track" role="progressbar" aria-valuenow={getPercentage(star)} aria-valuemin={0} aria-valuemax={100} aria-label={`${star} star ratings`}>
-              <div className="bar-fill" style={{ width: `${getPercentage(star)}%` }} />
+            <div className="bar-track" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={`${star} star ratings`}>
+              <div className="bar-fill" style={{ width: `${pct}%` }} />
             </div>
-            <span className="bar-percent">{getPercentage(star)}%</span>
+            <span className="bar-percent">{pct}%</span>
           </div>
-        ))}
+          );
+        })}
       </div>
+      )}
     </div>
   );
 }
@@ -320,7 +336,7 @@ export function ReviewsSection({ listingId }: { listingId: string }) {
           Reviews
           <span className="reviews-count">({avgRating.count})</span>
         </h3>
-        <RatingDistribution avg={avgRating.avg} count={avgRating.count} />
+        <RatingDistribution avg={avgRating.avg} count={avgRating.count} reviews={reviews} />
       </header>
 
       <div className="reviews-list" role="list" aria-label="Customer reviews">
