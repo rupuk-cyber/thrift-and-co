@@ -27,8 +27,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AuthProvider>
             <ToastProvider>
               <Navbar />
-              <main>{children}</main>
-              <footer className="site-footer">
+              <main className="main-content fade-up">{children}</main>
+              <footer className="site-footer fade-up">
                 <div className="container">
                   🛍️ Thrift<span style={{ color: "var(--accent)" }}>&</span>Co. — give things a
                   second life.

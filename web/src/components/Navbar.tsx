@@ -96,13 +96,13 @@ export function Navbar() {
   return (
     <header className="header">
       <div className="container header-inner">
-        <Link href="/" className="logo">
-          <span className="logo-icon" aria-hidden="true">
-            🛍️
-          </span>
-          Thrift<span>&</span>Co.
-        </Link>
-        <nav aria-label="Main navigation">
+        <nav className="navbar-inner" aria-label="Main navigation">
+          <Link href="/" className="logo">
+            <span className="logo-icon" aria-hidden="true">
+              🛍️
+            </span>
+            Thrift<span>&</span>Co.
+          </Link>
           <div className="nav-actions">
             <ThemeToggle />
             {!loading && !user && (

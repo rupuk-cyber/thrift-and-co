@@ -114,16 +114,17 @@ export function HomeBrowser() {
 
   return (
     <div className="container">
-      <section className="hero">
+      <section className="hero fade-up">
+        <div className="hero-orbs" aria-hidden="true" />
         <h1>
           Find <span>treasures</span> that tell a story
         </h1>
-        <p>
+        <p className="hero-subtitle">
           Pre-loved, carefully selected secondhand goods — each with its own character and history.
         </p>
       </section>
 
-      <div className="search-row">
+      <div className="search-row fade-up">
         <div className="search-field">
           <label htmlFor="listing-search" className="sr-only">
             Search listings
@@ -157,7 +158,7 @@ export function HomeBrowser() {
       {status === "loading" && <ProductGridSkeleton count={8} />}
 
       {status === "error" && (
-        <div className="no-products">
+        <div className="no-products fade-up">
           <span className="empty-icon" aria-hidden="true">
             ❌
           </span>
@@ -172,7 +173,7 @@ export function HomeBrowser() {
       )}
 
       {status === "ready" && items.length === 0 && (
-        <div className="product-grid">
+        <div className="product-grid fade-up">
           <div className="no-products">
             <span className="empty-icon" aria-hidden="true">
               🔍
@@ -200,13 +201,13 @@ export function HomeBrowser() {
 
       {status === "ready" && items.length > 0 && (
         <>
-          <div className="product-grid">
+          <div className="product-grid fade-up">
             {items.map((listing) => (
               <ProductCard key={listing.id} listing={listing} />
             ))}
           </div>
           {cursor && (
-            <div className="load-more-row">
+            <div className="load-more-row fade-up">
               <Button variant="outline" onClick={loadMore} loading={loadingMore}>
                 Load more
               </Button>

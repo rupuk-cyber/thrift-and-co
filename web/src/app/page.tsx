@@ -5,7 +5,9 @@ import { ProductGridSkeleton } from "@/src/components/Skeletons";
 export default function HomePage() {
   return (
     <Suspense fallback={<ProductGridSkeleton count={8} />}>
-      <HomeBrowser />
+      <div className="page-content fade-up">
+        <HomeBrowser />
+      </div>
     </Suspense>
   );
 }
