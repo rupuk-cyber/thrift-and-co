@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "@/src/styles/shell.css";
+import "@/src/styles/plp.css";
+import "@/src/styles/pdp.css";
+import "@/src/styles/pages.css";
+import "@/src/styles/motion.css";
 import { AuthProvider } from "@/src/components/AuthProvider";
 import { Navbar } from "@/src/components/Navbar";
 import { ThemeProvider } from "@/src/components/ThemeProvider";

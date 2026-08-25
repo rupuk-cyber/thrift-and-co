@@ -1,0 +1,206 @@
+/* ============================================================
+   Thrift & Co. — Motion Micro-interactions Layer
+   Imported AFTER globals.css / pages.css
+   ============================================================ */
+
+/* 1. Heart pop — favorite button */
+@keyframes heart-pop {
+  0% {
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.35) rotate(-8deg);
+  }
+  70% {
+    transform: scale(1.1) rotate(4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.heart-pop {
+  animation: heart-pop 400ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* 2. Card tilt support */
+[data-tilt] {
+  transform: perspective(800px)
+    rotateX(var(--tilt-y, 0deg))
+    rotateY(var(--tilt-x, 0deg))
+    translateY(var(--lift, 0));
+  transition: transform 150ms ease-out;
+  will-change: transform;
+}
+
+.product-card:hover {
+  --lift: -6px;
+}
+
+/* 3. Staggered entrance using existing fade-up-in keyframes */
+.stagger > * {
+  animation: fade-up-in 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+  opacity: 0;
+}
+
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 40ms; }
+.stagger > *:nth-child(3) { animation-delay: 80ms; }
+.stagger > *:nth-child(4) { animation-delay: 120ms; }
+.stagger > *:nth-child(5) { animation-delay: 160ms; }
+.stagger > *:nth-child(6) { animation-delay: 200ms; }
+.stagger > *:nth-child(7) { animation-delay: 240ms; }
+.stagger > *:nth-child(8) { animation-delay: 280ms; }
+.stagger > *:nth-child(9) { animation-delay: 320ms; }
+.stagger > *:nth-child(10) { animation-delay: 360ms; }
+.stagger > *:nth-child(11) { animation-delay: 400ms; }
+.stagger > *:nth-child(12) { animation-delay: 440ms; }
+
+/* 4. Button micro-feedback */
+.btn {
+  transition: transform 100ms cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 100ms cubic-bezier(0.23, 1, 0.32, 1),
+    background 100ms ease;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+  transition-duration: 50ms;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(184, 135, 90, 0.15);
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 500ms ease-out;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.btn-primary:hover:not(:disabled)::after {
+  transform: translateX(200%);
+}
+
+/* 5. Toast slide-in refinement */
+.toast {
+  animation: toast-enter 0.4s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.toast.toast-leaving {
+  animation: toast-exit 0.3s ease-in forwards;
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+  }
+}
+
+/* 6. Skeleton shimmer polish */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    var(--bg-secondary) 50%,
+    var(--bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 7. Page transition — refine fade-up to Apple-like easeOutExpo */
+.fade-up,
+.main-content.fade-up,
+.page-content.fade-up {
+  animation: fade-up-in 0.6s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+/* 8. Scroll-driven reveal utility */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fade-up-in 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation-timeline: view(block);
+  animation-range: entry 0% cover 30%;
+}
+
+@supports not (animation-timeline: view()) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+/* ============================================================
+   PREFERS-REDUCED-MOTION — disable all movement, keep opacity
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .heart-pop,
+  [data-tilt],
+  .stagger > *,
+  .btn,
+  .btn-primary::after,
+  .toast,
+  .skeleton,
+  .fade-up,
+  .main-content.fade-up,
+  .page-content.fade-up,
+  .reveal-on-scroll {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  [data-tilt] {
+    transition: none !important;
+  }
+
+  .product-card:hover {
+    --lift: 0;
+  }
+
+  .btn:active:not(:disabled),
+  .btn-primary:hover:not(:disabled)::after {
+    transform: none !important;
+  }
+}

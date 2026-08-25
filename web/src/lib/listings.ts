@@ -16,7 +16,7 @@ import {
   type QueryDocumentSnapshot,
 } from "firebase/firestore";
 import { CATEGORIES, CONDITIONS } from "@/src/lib/types";
-import type { Listing } from "@/src/lib/types";
+import type { Listing, SortOption, SellerStats } from "@/src/lib/types";
 import { getFirestoreDb } from "@/src/lib/firebase";
 
 const DEFAULT_PAGE_SIZE = 12;
@@ -30,6 +30,10 @@ const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 export interface GetListingsOptions {
   category?: string;
   search?: string;
+  priceMin?: number;
+  priceMax?: number;
+  conditions?: string[];
+  sort?: SortOption;
   pageSize?: number;
   cursor?: string;
 }
@@ -86,9 +90,27 @@ export async function getListings(
   const searchTerm = opts.search?.trim().toLowerCase() ?? "";
   const fetchLimit = searchTerm ? pageSize * SEARCH_FETCH_MULTIPLIER : pageSize;
 
-  const constraints: QueryConstraint[] = [orderBy("createdAt", "desc"), limit(fetchLimit)];
+  const isPriceSort = opts.sort === "price-asc" || opts.sort === "price-desc";
+  const constraints: QueryConstraint[] = [];
+
+  if (isPriceSort) {
+    constraints.push(orderBy("price", opts.sort === "price-asc" ? "asc" : "desc"));
+  } else {
+    constraints.push(orderBy("createdAt", "desc"));
+  }
+  constraints.push(limit(fetchLimit));
+
   if (opts.category) {
     constraints.unshift(where("category", "==", opts.category));
+  }
+  if (typeof opts.priceMin === "number") {
+    constraints.unshift(where("price", ">=", opts.priceMin));
+  }
+  if (typeof opts.priceMax === "number") {
+    constraints.unshift(where("price", "<=", opts.priceMax));
+  }
+  if (opts.conditions && opts.conditions.length > 0) {
+    constraints.unshift(where("condition", "in", opts.conditions));
   }
   if (opts.cursor) {
     const decoded = decodeCursor(opts.cursor);
@@ -228,4 +250,18 @@ export async function createListing(
   });
 
   return docRef.id;
+}
+
+export async function getListingsBySeller(sellerId: string): Promise<Listing[]> {
+  const db = getFirestoreDb();
+  const snapshot = await getDocs(
+    query(collection(db, "listings"), where("sellerId", "==", sellerId), orderBy("createdAt", "desc"))
+  );
+  return snapshot.docs.map((docSnap) => toListing(docSnap.id, docSnap.data()));
+}
+
+export async function getSellerStats(sellerId: string): Promise<SellerStats> {
+  const listings = await getListingsBySeller(sellerId);
+  const totalValue = listings.reduce((sum, listing) => sum + listing.price, 0);
+  return { count: listings.length, totalValue };
 }

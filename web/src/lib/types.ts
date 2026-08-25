@@ -31,3 +31,26 @@ export interface Listing {
   sellerName: string;
   createdAt: number;
 }
+
+export type SortOption = "newest" | "price-asc" | "price-desc";
+export interface ListingFilters {
+  category?: string;
+  search?: string;
+  priceMin?: number;
+  priceMax?: number;
+  conditions?: string[];
+  sort?: SortOption;
+}
+export interface Review {
+  id: string;
+  listingId: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt: number;
+}
+export interface SellerStats {
+  count: number;
+  totalValue: number;
+}
