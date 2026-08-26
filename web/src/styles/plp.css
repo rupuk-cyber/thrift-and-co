@@ -5,6 +5,8 @@
 /* Hero: compact now that the navbar owns global search.
    The in-page search row is hidden to avoid triple-search confusion. */
 .hero {
+  position: relative;
+  overflow: hidden;
   padding-top: var(--space-8);
   padding-bottom: var(--space-6);
 }
@@ -13,6 +15,17 @@
 }
 .search-row {
   display: none;
+}
+
+/* Hero orbs fix: prevent horizontal overflow at all widths */
+.hero-orbs {
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50% / 40%;
+  background:
+    radial-gradient(ellipse 60% 80% at 30% 40%, rgba(184, 135, 90, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 70% at 75% 35%, rgba(212, 163, 115, 0.18) 0%, transparent 65%);
+  filter: blur(80px);
 }
 
 /* ---- Filter Sidebar (Desktop) ---- */
@@ -515,5 +528,45 @@
   .results-count {
     font-size: var(--text-sm);
     color: var(--text-secondary);
+  }
+}
+
+/* Category bar: horizontal scroll-snap row on mobile (<=640px) */
+@media (max-width: 640px) {
+  .category-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: var(--space-2);
+    padding-inline-end: var(--space-4);
+    justify-content: flex-start;
+    margin-bottom: var(--space-6);
+  }
+  .category-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .category-pill {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+}
+
+/* Tablet and up: keep wrap behavior */
+@media (min-width: 641px) {
+  .category-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0;
+    padding-inline-end: 0;
+  }
+  .category-pill {
+    scroll-snap-align: none;
+    flex-shrink: 1;
   }
 }

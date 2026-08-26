@@ -16,6 +16,13 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 560px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 .page-title {
   font-size: var(--text-3xl);
   font-weight: 700;
@@ -33,9 +40,15 @@
 /* ---------- Stat Cards (Dashboard) ---------- */
 .stat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-4);
   margin-bottom: var(--space-6);
+}
+
+@media (min-width: 700px) {
+  .stat-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .stat-card {
@@ -60,6 +73,10 @@
   font-weight: 500;
   color: var(--text-secondary);
   margin-bottom: var(--space-2);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .stat-value {
@@ -68,6 +85,10 @@
   color: var(--text-primary);
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .stat-value.counting {
@@ -94,6 +115,8 @@
 /* ---------- Table (Dashboard Listings) ---------- */
 .table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
   border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
@@ -132,6 +155,7 @@
   padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--glass-border);
   vertical-align: middle;
+  white-space: normal;
 }
 
 .listings-table tbody tr:last-child td {
@@ -307,7 +331,7 @@
 /* ---------- Favorites Grid ---------- */
 .favorites-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr));
   gap: var(--space-6);
 }
 
@@ -474,7 +498,7 @@
 
 .seller-listings-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr));
   gap: var(--space-6);
 }
 
@@ -596,10 +620,6 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
-  .stat-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
   .seller-stats-row {
     gap: var(--space-4);
   }
@@ -612,11 +632,6 @@
   
   .page-title {
     font-size: var(--text-2xl);
-  }
-  
-  .stat-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-3);
   }
   
   .stat-card {
@@ -685,16 +700,12 @@
   
   .favorites-grid,
   .seller-listings-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr));
     gap: var(--space-4);
   }
 }
 
 @media (max-width: 480px) {
-  .stat-grid {
-    grid-template-columns: 1fr;
-  }
-  
   .seller-header-card {
     flex-direction: column;
     text-align: center;
@@ -710,7 +721,7 @@
   
   .favorites-grid,
   .seller-listings-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-3);
   }
   
