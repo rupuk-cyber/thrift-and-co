@@ -131,7 +131,7 @@
 /* Condition multi-checkboxes */
 .condition-checkboxes {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-2);
 }
 
@@ -148,6 +148,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  min-width: 0;
 }
 .condition-checkbox-item:hover {
   border-color: var(--accent);
@@ -167,6 +168,9 @@
   font-size: var(--text-xs);
   font-weight: 500;
   color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .condition-checkbox-item:has(input:checked) .cond-label {
   color: var(--accent);
@@ -176,7 +180,7 @@
 /* Price min/max inputs */
 .price-inputs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
 }
 
@@ -193,6 +197,9 @@
 }
 
 .price-input-group input {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
@@ -376,6 +383,7 @@
   overflow-y: auto;
   transform: translateY(100%);
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  box-sizing: border-box;
 }
 .filter-bottom-sheet.open {
   transform: translateY(0);
@@ -425,7 +433,9 @@
 }
 
 .filter-bottom-sheet-content {
-  padding: var(--space-4) var(--space-6) var(--space-8);
+  padding: var(--space-4) var(--space-4) calc(var(--space-8) + env(safe-area-inset-bottom, 0px));
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .filter-bottom-sheet .filter-section {
